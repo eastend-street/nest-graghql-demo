@@ -8,13 +8,17 @@ import { CreatePetInput } from './dto/create-pet.input';
 export class PetsService {
   constructor(@InjectRepository(Pet) private petsRepository: Repository<Pet>) {}
 
-  async createPet(createPetInput: CreatePetInput): Promise<Pet> {
+  createPet(createPetInput: CreatePetInput): Promise<Pet> {
     const newPet = this.petsRepository.create(createPetInput); // newPet = new Pet(); new.name = input.name
 
     return this.petsRepository.save(newPet); // insert
   }
 
-  async findAll(): Promise<Pet[]> {
+  findAll(): Promise<Pet[]> {
     return this.petsRepository.find(); // SELECT * pet
+  }
+
+  findOne(id: number): Promise<Pet> {
+    return this.petsRepository.findOneOrFail({ where: { id } });
   }
 }
